@@ -11,4 +11,4 @@
 
 <hr></hr>
 
-<p font-weight="bold" align="center"> Release before 2023 </p>
+<p align="center"> <strong>Release before 2023</strong> </p>
