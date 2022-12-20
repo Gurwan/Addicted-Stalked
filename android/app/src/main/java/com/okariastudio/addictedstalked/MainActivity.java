@@ -1,6 +1,7 @@
 package com.okariastudio.addictedstalked;
 
 import android.app.AppOpsManager;
+import android.app.Service;
 import android.app.usage.UsageStatsManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         Timer timer = new Timer();
-        timer.scheduleAtFixedRate(updateView,0,1000);
+        timer.scheduleAtFixedRate(updateView,0,5000);
     }
 
     public boolean authorized(){
