@@ -1,5 +1,6 @@
 package com.okariastudio.addictedstalked;
 
+import android.app.KeyguardManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -12,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.os.UserManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
@@ -51,6 +53,7 @@ public class BackgroundService extends Service {
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
+                KeyguardManager manager = (KeyguardManager)getSystemService(Context.KEYGUARD_SERVICE);
                 sharedPreferences = getSharedPreferences("Addicted Stalked",MODE_PRIVATE);
                 editor = sharedPreferences.edit();
                 long end = System.currentTimeMillis();
@@ -63,19 +66,13 @@ public class BackgroundService extends Service {
                         total += u.getTotalTimeInForeground();
                     }
                     editor.putInt("ALL_COUNTER_REAL",total);
-                    UserManager userManager = (UserManager)getSystemService(Context.USER_SERVICE);
-                    if(userManager.isUserUnlocked()){
-                        int allTime = sharedPreferences.getInt("ALL_COUNTER_REAL",-1);
-                        if(total - 10000 > allTime){
-                            editor.putInt("TIME_LAST_PAUSE",total);
-                            System.out.println("total : " + total + " et allTime : "+ allTime);
-                        }
+                    if(!(manager.inKeyguardRestrictedInputMode())){
                         int totalBeforeLock = sharedPreferences.getInt("TIME_LAST_PAUSE",-1);
                         if(totalBeforeLock != -1){
                            total = total - totalBeforeLock;
                         }
                     } else {
-                        System.out.println("lock");
+                        editor.putInt("TIME_LAST_PAUSE",total);
                     }
                     editor.putInt("ALL_COUNTER",total);
                     editor.apply();
@@ -84,7 +81,7 @@ public class BackgroundService extends Service {
         };
 
         Timer timer = new Timer();
-        timer.scheduleAtFixedRate(timerTask,0,500);
+        timer.scheduleAtFixedRate(timerTask,0,1000);
         return super.onStartCommand(intent, flags, startId);
     }
 

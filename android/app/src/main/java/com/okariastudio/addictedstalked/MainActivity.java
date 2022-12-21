@@ -36,12 +36,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(usageAccess);
 
             if(authorized()){
-                startService(new Intent(MainActivity.this,BackgroundService.class));
+                startForegroundService(new Intent(MainActivity.this,BackgroundService.class));
             } else {
                 Toast.makeText(getApplicationContext(),"Addicted Stalker won't work without this authorization !",Toast.LENGTH_LONG).show();
             }
         } else {
-            if(startService(new Intent(MainActivity.this,BackgroundService.class)) != null){
+            if(startForegroundService(new Intent(MainActivity.this,BackgroundService.class)) != null){
                 System.out.println("already running");
             } else {
                 System.out.println("starting service..");
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         Timer timer = new Timer();
-        timer.scheduleAtFixedRate(updateView,0,5000);
+        timer.scheduleAtFixedRate(updateView,0,1000);
     }
 
     public boolean authorized(){
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         if(authorized()){
-            startService(new Intent(MainActivity.this,BackgroundService.class));
+            startForegroundService(new Intent(MainActivity.this,BackgroundService.class));
         }
         super.onDestroy();
     }
