@@ -30,20 +30,20 @@ public class BackgroundService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        String NOTIFICATION_CHANNEL_ID = "example.permanence";
-        String channelName = "Background Service";
-        NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
+        String NOTIFICATION_CHANNEL_ID = "okariastudio.addictedstalker.persistant";
+        NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "Background Service", NotificationManager.IMPORTANCE_DEFAULT);
+        channel.setLockscreenVisibility(-1);
         channel.setLightColor(Color.BLUE);
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         assert manager != null;
         manager.createNotificationChannel(channel);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
         Notification notification = notificationBuilder.setOngoing(true)
-                .setContentTitle("App is running in background")
-                .setPriority(NotificationManager.IMPORTANCE_HIGH)
+                .setContentTitle("Addicted Stalker is protecting you")
+                .setPriority(NotificationManager.IMPORTANCE_LOW)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build();
-        startForeground(2, notification);
+        startForeground(1, notification);
     }
 
     @Override
