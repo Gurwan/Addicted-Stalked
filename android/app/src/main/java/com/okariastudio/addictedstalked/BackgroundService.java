@@ -52,6 +52,7 @@ public class BackgroundService extends Service {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
         Notification notification = notificationBuilder.setOngoing(true)
                 .setContentTitle("Addicted Stalker is protecting you")
+                .setSmallIcon(R.drawable.ic_stat_name)
                 .setPriority(NotificationManager.IMPORTANCE_LOW)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build();
@@ -65,7 +66,7 @@ public class BackgroundService extends Service {
 
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_stat_name)
                 .setContentTitle("Alerte : Addicted Stalked")
                 .setContentText("Oula ça fait déjà 10 minutes qu'est que tu fais de beau ?")
                 .setPriority(NotificationCompat.PRIORITY_MAX);
