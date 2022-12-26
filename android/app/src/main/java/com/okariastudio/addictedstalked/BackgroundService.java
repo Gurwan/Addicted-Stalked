@@ -32,6 +32,9 @@ public class BackgroundService extends Service {
     private final int MINUTES_EIGHT = 480000;
     private final int MINUTES_FIVE = 300000;
     private final int MINUTES_FOUR = 240000;
+    private final int MINUTES_ONE = 60000;
+    private final int SECONDS_TWENTY = 20000;
+    private final int SECONDS_FIFTY = 50000;
 
     @Override
     public void onCreate() {
@@ -90,9 +93,7 @@ public class BackgroundService extends Service {
                     for(UsageStats u : usageStatsList){
                         total += u.getTotalTimeInForeground();
                     }
-
                     editor.putInt("ALL_COUNTER_REAL",total);
-
                     if(!(manager.inKeyguardRestrictedInputMode())){
                         int totalBeforeLock = sharedPreferences.getInt("TIME_LAST_PAUSE",-1);
                         if(totalBeforeLock != -1){
@@ -101,14 +102,13 @@ public class BackgroundService extends Service {
                     } else {
                         editor.putInt("TIME_LAST_PAUSE",total);
                     }
-
-                    if(total > 600000 && (sharedPreferences.getInt("TEN_SENT",-1) == 0)){
+                    if(total >= MINUTES_ONE && (sharedPreferences.getInt("TEN_SENT",-1) == 0)){
                         editor.putInt("TEN_SENT",1);
-                        notificationManager.notify(2, builder.build());
-                    } else if (total >= MINUTES_EIGHT && total <= MINUTES_NINE){
+                        notificationManager.notify(sharedPreferences.getInt("I_NOTIFICATION_ID",2), builder.build());
+                        editor.putInt("I_NOTIFICATION_ID",sharedPreferences.getInt("I_NOTIFICATION_ID",2)+1);
+                    } else if (total >= SECONDS_TWENTY && total <= SECONDS_FIFTY){
                         editor.putInt("TEN_SENT",0);
                     }
-
                     editor.putInt("ALL_COUNTER",total);
                     editor.apply();
                 }
